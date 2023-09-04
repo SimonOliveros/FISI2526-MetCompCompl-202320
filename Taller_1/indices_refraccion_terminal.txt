@@ -1,0 +1,16 @@
+1.1
+Primero creamos la carpeta materiales
+mkdir Materiales 
+touch Materiales.txt
+Con esta función escribimos sobre el documento creado la columna conteniendo únicamente los nombres.
+awk -F "," 'NR>1 {print$3}' indices_refraccion.csv > Materiales.txt
+
+1.2
+Ahora para descargar los archivos contenidos en los links vamos a hacer el siguiente proceso para cada categoría de material, en este Word escribiremos el ejemplo con la categoría vidrios:
+mkdir Vidrios
+cd Vidrios 
+touch Cat_Vidrios.txt
+awk -F "," '$1 ~ /Vidrio/ {print$4}' indices_refraccion.csv > Cat_Vidrios.txt
+Con esta línea lo que hacemos es crear un .txt solo con los links de descarga separados por categoría 
+Para finalizar usamos el comando wget -i Cat_Vidrios.txt
+Este descarga todos los links escritos en Cat_Vidrios.txt en la carpeta vidrios. Guardando cada archivo .yml dentro de esta misma 
