@@ -1,5 +1,6 @@
 import numpy as np
 import sympy as sym
+import math as math
 import matplotlib.pyplot as plt
 
 x = sym.Symbol('x',real=True)
@@ -14,7 +15,10 @@ def GetLaguerreRecursive(n,x):
     else:
         poly = ((2*(n-1)+1-x)*GetLaguerreRecursive(n-1,x)-(n-1)*GetLaguerreRecursive(n-2,x))/n
    
-    return sym.expand(poly,x)
+    return sym.expand(poly, x)
+
+
+
 
 def GetDLaguerre(n,x):
     Pn = GetLaguerreRecursive(n,x)
@@ -84,6 +88,8 @@ def GetAllRootsGLag(n):
     
     return Roots
 
+
+
 def GetWeightsGLag(n):
 
     Roots = GetAllRootsGLag(n)
@@ -97,7 +103,7 @@ def GetWeightsGLag(n):
     
     return Weights
 
-
+print(GetWeightsGLag(10))
 def GetHermiteRecursive(n,x):
 
     if n==0:
@@ -108,6 +114,47 @@ def GetHermiteRecursive(n,x):
         poly = (2*x*GetHermiteRecursive(n-1,x))-(2*(n-1)*GetHermiteRecursive(n-2,x))
    
     return sym.expand(poly,x)
+
+def GetDHermite(n,x):
+    Poly=GetHermiteRecursive(n,x)
+    return sym.diff(Poly,x,1)
+
+
+def GetAllRootsGHermite(n):
+    N= (4*n+1)**(1/2)
+
+    xn = np.linspace(-N,N,300)
+    
+    Hermite = []
+    DHermite = []
+    
+    for i in range(n+1):
+        Hermite.append(GetHermiteRecursive(i,x))
+        DHermite.append(GetDHermite(i,x))
+    
+    poly = sym.lambdify([x],Hermite[n],'numpy')
+    Dpoly = sym.lambdify([x],DHermite[n],'numpy')
+    Roots = GetRoots(poly,Dpoly,xn)
+
+    if len(Roots) != n:
+        ValueError('El número de raíces debe ser igual al n del polinomio.')
+    
+    return Roots
+
+def GetWeightsGHer(n):
+
+    Roots = GetAllRootsGHermite(n)
+    
+
+    PolyHermite= sym.lambdify([x],GetHermiteRecursive(n-1,x),'numpy')
+
+
+
+    Weights = ((2**(n-1))*math.factorial(n)*((np.pi)**(1/2)))/((n**2)*(PolyHermite(Roots))**2)
+    
+    return Weights
+
+
 
 
 
@@ -132,7 +179,29 @@ for t in range(100,1100,100):
     plt.title("Distribución de las velocidades de las moléculas de un gas ideal \n  para distintas temperaturas")
 
 plt.show()
+#La velocidad más probable va aumentando a medida de que aumenta la temperatura
 
+def P2(x):
+    
+    return x*(4*np.pi)*((1/(2*np.pi*8.314*100))**(3/2))*(x**2)*np.exp(-((1*x**2)/(2*np.pi*8.314*100)))
+
+
+def IntWithLaguerre(n,f):
+    Raices=GetAllRootsGLag(n)
+    pesos=GetWeightsGLag(n)
+    for i in range(n+1):
+        R=Raices[i]
+        r=pesos[i]*f(R)
+        sum+=r
+    return sum
+
+
+
+
+
+
+        
+    
 
 
 
