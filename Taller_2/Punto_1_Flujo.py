@@ -36,7 +36,7 @@ y=corriente_inducida(1750,derivada_flujo)
 dy=DerivadaCentral(y, t_ajustada)
 
 plt.scatter(t_ajustada,y)
-#plt.show()
+plt.show()
 
 def Flujo(t:float):
      return float(np.pi*(0.125**2)*0.05*np.cos(3.5*t)*np.cos(2*np.pi*7*t))

@@ -153,6 +153,7 @@ def GetWeightsGHer(n):
     Weights = ((2**(n-1))*math.factorial(n)*((np.pi)**(1/2)))/((n**2)*(PolyHermite(Roots))**2)
     
     return Weights
+print(GetWeightsGHer(10))
 
 
 
@@ -178,7 +179,7 @@ for t in range(100,1100,100):
     plt.ylabel("Probabilidad")
     plt.title("Distribución de las velocidades de las moléculas de un gas ideal \n  para distintas temperaturas")
 
-plt.show()
+#plt.show()
 #La velocidad más probable va aumentando a medida de que aumenta la temperatura
 
 def P2(x):
@@ -194,6 +195,8 @@ def IntWithLaguerre(n,f):
         r=pesos[i]*f(R)
         sum+=r
     return sum
+
+print(IntWithLaguerre(8,P2(x)))
 
 
 
